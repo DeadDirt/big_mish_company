@@ -4,14 +4,19 @@ from classes import *
 from geocoder import *
 
 
-def search(text, cur_map):
-    # Ищем введенный в строку поиска объект
-    lat, lon = get_coordinates(text)
+def search(text, cur_map, chan=True, cord=None):
+    if not chan:  # Если нет координат тыка
+        #  Ищем введенный в строку поиска объект, если нет координат тыка
+        lat, lon = get_coordinates(text)
+    else:  # Иначе подставляем готовые координаты
+        lat, lon = cord
+
     if lat is None or lon is None:
         print('Не нашлось')
         return
     lat, lon = round(lat, 3), round(lon, 3)
-    cur_map.go_to_coords(lat, lon, True)  # перемещаем карту
+    if chan:
+        cur_map.go_to_coords(lat, lon, True)  # перемещаем карту если нужно
 
 
 def show_map(ll=None, spnx=0.02, spny=0.02, map_type='map', add_params=[]):
@@ -42,6 +47,10 @@ def show_map(ll=None, spnx=0.02, spny=0.02, map_type='map', add_params=[]):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # {'pos': (286, 170), 'button': 1}
+                if event.dict['button'] == 1:
+                    search(search_box.text, cur_map, False, (142, 113)) # здесь вместо нулей нужно вставить чёртовы координаты, Вась
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_PAGEUP:
                     cur_map.map_change_size(2)  # увеличиваем область показа

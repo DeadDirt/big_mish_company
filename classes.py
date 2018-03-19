@@ -232,6 +232,7 @@ class Button(Label):
         super().__init__(rect, text)
         self.bgcolor = pygame.Color('white')
         self.pressed = False
+        self.active = False
 
     def render(self, surface):
         surface.fill(self.bgcolor, self.rect)

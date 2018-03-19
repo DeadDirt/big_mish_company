@@ -65,12 +65,12 @@ def get_postal_code(address):
         zip_code = None
     return zip_code
 
+
 # Получаем координаты объекта по его адресу.
 def get_coordinates(address):
     toponym = geocode(address)
     if not toponym:
         return None, None
-
     # Координаты центра топонима:
     toponym_coodrinates = toponym["Point"]["pos"]
     # Широта, преобразованная в плавающее число:
